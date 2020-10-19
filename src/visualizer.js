@@ -1,54 +1,72 @@
-/*
-    The purpose of this file is to take in the analyser node and a <canvas> element: 
-      - the module will create a drawing context that points at the <canvas> 
-      - it will store the reference to the analyser node
-      - in draw(), it will loop through the data in the analyser node
-      - and then draw something representative on the canvas
-      - maybe a better name for this file/module would be *visualizer.js* ?
-*/
+import { ctxUtil, mathUtil } from './utils/utils.js';
 
-import * as utils from './utils.js';
+let ctx;
+let canvasWidth;
+let canvasHeight;
 
-let ctx, canvasWidth, canvasHeight, gradient, analyserNode, audioData;
+let backgroundColor;
 
+let analyserNode;
+let audioData;
 
-let setupCanvas = (canvasElement, analyserNodeRef) => {
-    // create drawing context
+const setupCanvas = (canvasElement, analyserNodeRef, audioDataRef) => {
+    // Create drawing context
     ctx = canvasElement.getContext("2d");
     canvasWidth = canvasElement.width;
     canvasHeight = canvasElement.height;
-    // create a gradient that runs top to bottom
-    gradient = utils.getLinearGradient(ctx, 0, 0, 0, canvasHeight, [{ percent: 0, color: "#020024" }, { percent: .35, color: "#090979" }, { percent: 1, color: "#00d4ff" }]);
-    // keep a reference to the analyser node
+
+    // Define the background color
+    backgroundColor = "rba(0, 0, 0, .1)";
+
+    // Keep a reference to the analyser node
     analyserNode = analyserNodeRef
-        // this is the array where the analyser data will be stored
-    audioData = new Uint8Array(analyserNode.fftSize / 2);
+        // Array where the analyser data will be stored
+    audioData = audioDataRef;
 }
 
-let draw = (params = {}) => {
-    // 1 - populate the audioData array with the frequency data from the analyserNode
-    // notice these arrays are passed "by reference" 
+const draw = (params = {}) => {
+    // Populate the audioData array with the frequency data from the analyserNode
     analyserNode.getByteFrequencyData(audioData);
     // OR
     //analyserNode.getByteTimeDomainData(audioData); // waveform data
 
-    // 2 - draw background
-    ctx.save();
-    ctx.fillStyle = "black";
-    ctx.globalAlpha = .1;
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-    ctx.restore();
+    // Draw background
+    ctxUtil.fillBackground(ctx, backgroundColor);
 
-    // 3 - draw gradient
-    if (params.showGradient) {
-        ctx.save();
-        ctx.fillStyle = gradient;
-        ctx.globalAlpha = .3;
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-        ctx.restore();
+    // Draw polygon
+    let centerX = canvasWidth / 2;
+    let centerY = canvasHeight / 2;
+    let baseR = 50;
+    let frequencyScalar = 0.5;
+    let rScalar = 0.75;
+
+    let points = new Array();
+
+    let minFreq = 20;
+    let maxFreq = [...audioData].indexOf(0);
+    let theta = 0;
+    let numPoints = maxFreq - minFreq;
+    const dTheta = 2 * Math.PI / numPoints;
+
+    for (let i = minFreq; i < maxFreq; i++) {
+        let thetaScalar;
+        if (theta < -3 * Math.PI / 2)
+            thetaScalar = (Math.abs(theta) ** 0.2);
+        else
+            thetaScalar = 1;
+        const cos = Math.cos(theta);
+        const sin = Math.sin(theta);
+        points.push({
+            x: centerX + rScalar * (baseR * cos + frequencyScalar * audioData[i] * cos) * thetaScalar,
+            y: centerY + rScalar * (baseR * sin + frequencyScalar * audioData[i] * sin) * thetaScalar
+        });
+
+        theta -= dTheta;
     }
+    if (points.length > 3)
+        ctxUtil.fillPolygon(ctx, points, "blue");
 
-    // 4 - draw bars
+    // Draw bars
     if (params.showBars) {
         let barSpacing = 4;
         let margin = 5;
@@ -78,14 +96,14 @@ let draw = (params = {}) => {
 
             let circleRadius = percent * maxRadius;
             ctx.beginPath();
-            ctx.fillStyle = utils.makeColor(255, 111, 111, .34 - percent / 3.0);
+            ctx.fillStyle = `rgba(255, 111, 111, ${.34 - percent / 3.0})`;
             ctx.arc(canvasWidth / 2, canvasHeight / 2, circleRadius, 0, 2 * Math.PI, false);
             ctx.fill();
             ctx.closePath();
 
             // blue-ish circles, bigger, more transparent
             ctx.beginPath();
-            ctx.fillStyle = utils.makeColor(0, 0, 255, .1 - percent / 10.0);
+            ctx.fillStyle = `rgba(0, 0, 255, ${.1 - percent / 10.0})`;
             ctx.arc(canvasWidth / 2, canvasHeight / 2, circleRadius * 1.5, 0, 2 * Math.PI, false);
             ctx.fill();
             ctx.closePath();
@@ -93,7 +111,7 @@ let draw = (params = {}) => {
             // yellow-ish circles, smaller
             ctx.save();
             ctx.beginPath();
-            ctx.fillStyle = utils.makeColor(200, 200, 0, .5 - percent / 5.0);
+            ctx.fillStyle = `rgba(200, 200, 0, ${.5 - percent / 5.0})`;
             ctx.arc(canvasWidth / 2, canvasHeight / 2, circleRadius * .5, 0, 2 * Math.PI, false);
             ctx.fill();
             ctx.closePath();
@@ -102,49 +120,34 @@ let draw = (params = {}) => {
         ctx.restore();
     }
 
-    // 6 - bitmap manipulation
-    // TODO: right now. we are looping though every pixel of the canvas (320,000 of them!), 
-    // regardless of whether or not we are applying a pixel effect
-    // At some point, refactor this code so that we are looping though the image data only if
-    // it is necessary
-
-    // A) grab all of the pixels on the canvas and put them in the `data` array
-    // `imageData.data` is a `Uint8ClampedArray()` typed array that has 1.28 million elements!
-    // the variable `data` below is a reference to that array 
+    // Bitmap manipulation (only if an)
     let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
     let data = imageData.data;
     let length = data.length;
-    let width = imageData.width; // not using here
-    // B) Iterate through each pixel, stepping 4 elements at a time (which is the RGBA for 1 pixel)
+    let width = imageData.width;
+
+    // data[i] is the red channel
+    // data[i+1] is the green channel
+    // data[i+2] is the blue channel
+    // data[i+3] is the alpha channel
     for (let i = 0; i < length; i += 4) {
         // White Noise
         if (params.showNoise && Math.random() < .05) {
-            // data[i] is the red channel
-            // data[i+1] is the green channel
-            // data[i+2] is the blue channel
-            // data[i+3] is the alpha channel
-
             // Make all channels 100%
             data[i] = 255;
             data[i + 1] = 255;
             data[i + 2] = 255;
-        } // end if
-
+        }
         // Invert
         if (params.showInvert) {
-            let red = data[i],
-                green = data[i + 1],
-                blue = data[i + 2];
-            data[i] = 255 - red; // set red value
-            data[i + 1] = 255 - green; // set blue value
-            data[i + 2] = 255 - blue; // set green value
-            // data[i + 3] is the alpha but we're leaving that alone
+            data[i] = 255 - data[i]; // set red value
+            data[i + 1] = 255 - data[i + 1]; // set blue value
+            data[i + 2] = 255 - data[i + 2]; // set green value
         }
-    } // end for
-
+    }
     //Emboss
     if (params.showEmboss) {
-        // note we are stepping through *each* sub-pixel
+        // Stepping through *each* sub-pixel
         for (let i = 0; i < length; i++) {
             if (i % 4 == 3) continue; // skip alpha channel
             data[i] = 127 + 2 * data[i] - data[i + 4] - data[i + width * 4];

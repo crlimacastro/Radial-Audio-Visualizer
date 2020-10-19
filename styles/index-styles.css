@@ -1,39 +1,20 @@
 body {
-    background: #eeeeee;
-    font-family: tahoma, verdana, sans serif;
+    background: black;
+    color: white;
 }
 
 canvas {
-    margin-left: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
-    background: #fafafa;
+    display: block;
+    margin: 1rem auto;
+    width: 100%;
 }
 
 #controls {
     margin-left: 1rem;
 }
 
-#volumeLabel {
-    margin-left: 1rem;
-}
-
 section {
     margin-bottom: 1rem;
-}
-
-#playButton {
-    font-size: 1.2rem;
-    width: 6rem;
-}
-
-button[data-playing="yes"]:after {
-    content: "Pause";
-}
-
-button[data-playing="no"]:after {
-    content: "Play";
 }
 
 #fsButton {
