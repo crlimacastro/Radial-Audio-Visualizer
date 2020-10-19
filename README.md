@@ -96,6 +96,7 @@ TODO
 
 ## Log
 
-|  Date   | Description  |
-|:-------:|--------------|
-| 9/18/20 | Created repo |
+|  Date   | Description                             |
+|:-------:|-----------------------------------------|
+| 9/18/20 | Created repo                            |
+| 9/19/20 | Created radial audio visualizer polygon |
