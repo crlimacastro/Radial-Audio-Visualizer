@@ -29,10 +29,19 @@
                 </label>
             </section>
 
-            <section>
-                <span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label></span>
+            <section id="bitmapManipulations" class="checkboxSection">
+                <span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label><input type="color" id="noiseColor"><labal for="noiseColor">Noise Color</labal></span>
                 <span><input type="checkbox" id="invertCB"><label for="invertCB">Invert Colors</label></span>
                 <span><input type="checkbox" id="embossCB"><label for="embossCB">Show Emboss</label></span>
+            </section>
+
+            <section id="audioNodes" class="checkboxSection">
+                <span><input type="checkbox" id="highshelfCB"><label for="highshelfCB">Highshelf Filter
+                        (Treble)</label></span>
+                <span><input type="checkbox" id="lowshelfCB"><label for="lowshelfCB">Lowshelf Filter
+                        (Bass)</label></span>
+                <span><input type="checkbox" id="distortionCB"><label for="distortionCB">Distortion</label></span>
+                <span>0 <input type="range" min="0" max="100" value="0" id="distortionSlider"> 100</span>
             </section>
         </div>
     </main>

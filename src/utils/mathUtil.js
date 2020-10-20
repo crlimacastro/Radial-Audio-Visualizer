@@ -6,7 +6,25 @@ const Convert = {
     // Converts degrees to radians
     degToRad(degrees) {
         return degrees * Math.PI / 180;
+    },
+    // https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+    rgbToHex(r, g, b) {
+        let componentToHex = (c) => {
+            let hex = c.toString(16);
+            return hex.length = 1 ? "0" + hex : hex;
+        }
+
+        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    },
+    hexToRgb(hex) {
+        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
     }
+
 }
 
 // Function for remapping a value from one range of numbers to another
@@ -37,10 +55,16 @@ const getAveragedOutSet = (scalar, set) => {
     return averagedSet;
 }
 
+// Returns the net change from one index to the other
+const getDelta = (set, startIndex, endIndex) => {
+    return set[endIndex] - set[startIndex];
+}
+
 export {
     Convert,
     mapRange,
     lerp,
     average,
-    getAveragedOutSet
+    getAveragedOutSet,
+    getDelta
 }

@@ -66,7 +66,7 @@ const scaleAbout = (ctx, x, y, scaleX, scaleY) => {
 
 const fillRectangle = (ctx, x, y, w, h, color = "black", angle = 0) => {
     ctx.save();
-    this.rotateAbout = (ctx, (x + w * .5), (y + h * .5), angle);
+    rotateAbout(ctx, (x + w * .5), (y + h * .5), angle);
     ctx.beginPath();
     ctx.rect(x, y, w, h);
     ctx.closePath();
@@ -77,7 +77,7 @@ const fillRectangle = (ctx, x, y, w, h, color = "black", angle = 0) => {
 
 const strokeRectangle = (ctx, x, y, w, h, color = "black", angle = 0, strokeWidth = 1, lineDash = [], lineJoin = "miter") => {
     ctx.save();
-    this.rotateAbout = (ctx, (x + w * .5), (y + h * .5), angle);
+    rotateAbout(ctx, (x + w * .5), (y + h * .5), angle);
     ctx.beginPath();
     ctx.rect(x, y, w, h);
     ctx.closePath();
@@ -114,7 +114,7 @@ const strokeCircle = (ctx, x, y, r, color = "black", strokeWidth = 1, lineDash =
 
 const fillTriangle = (ctx, x, y, b, h, color = "black", angle = 0) => {
     ctx.save();
-    this.rotateAbout = (ctx, (x + b * .5), (y + h * .5), angle);
+    rotateAbout(ctx, (x + b * .5), (y + h * .5), angle);
     ctx.beginPath();
     ctx.moveTo(x - b * .5, y + h * .5);
     ctx.lineTo(x, y - h * .5);
@@ -127,7 +127,7 @@ const fillTriangle = (ctx, x, y, b, h, color = "black", angle = 0) => {
 
 const strokeTriangle = (ctx, x, y, b, h, color = "black", angle = 0, strokeWidth = 1, lineDash = [], lineJoin = "miter") => {
     ctx.save();
-    this.rotateAbout = (ctx, (x + b * .5), (y + h * .5), angle);
+    rotateAbout(ctx, (x + b * .5), (y + h * .5), angle);
     ctx.beginPath();
     ctx.moveTo(x - b * .5, y + h * .5);
     ctx.lineTo(x, y - h * .5);
@@ -143,7 +143,7 @@ const strokeTriangle = (ctx, x, y, b, h, color = "black", angle = 0, strokeWidth
 
 const fillRightTriangle = (ctx, x, y, b, h, color = "black", angle = 0) => {
     ctx.save();
-    this.rotateAbout = (ctx, x, y, angle);
+    this.rotateAbout(ctx, x, y, angle);
     ctx.beginPath();
     ctx.moveTo(x, y);
     ctx.lineTo(x, y + h);
@@ -156,7 +156,7 @@ const fillRightTriangle = (ctx, x, y, b, h, color = "black", angle = 0) => {
 
 const strokeRightTriangle = (ctx, x, y, b, h, color = "black", angle = 0, strokeWidth = 1, lineDash = [], lineJoin = "miter") => {
     ctx.save();
-    this.rotateAbout = (ctx, x, y, angle);
+    this.rotateAbout(ctx, x, y, angle);
     ctx.beginPath();
     ctx.moveTo(x, y);
     ctx.lineTo(x, y + h);
@@ -172,7 +172,7 @@ const strokeRightTriangle = (ctx, x, y, b, h, color = "black", angle = 0, stroke
 
 const fillArc = (ctx, x, y, r, startTheta, endTheta, invert = false, color = "black", angle = 0) => {
     ctx.save();
-    this.rotateAbout = (ctx, x, y, angle);
+    this.rotateAbout(ctx, x, y, angle);
     ctx.beginPath();
     if (endTheta > startTheta)
         ctx.arc(x, y, r, startTheta, -endTheta, !invert);
@@ -186,7 +186,7 @@ const fillArc = (ctx, x, y, r, startTheta, endTheta, invert = false, color = "bl
 
 const strokeArc = (ctx, x, y, r, startTheta, endTheta, invert = false, color = "black", angle = 0, strokeWidth = 1, lineDash = [], lineJoin = "miter") => {
     ctx.save();
-    this.rotateAbout = (ctx, x, y, angle);
+    this.rotateAbout(ctx, x, y, angle);
     ctx.beginPath();
     if (endTheta > startTheta)
         ctx.arc(x, y, r, startTheta, -endTheta, !invert);

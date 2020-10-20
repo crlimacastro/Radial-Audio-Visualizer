@@ -3,20 +3,39 @@ import { ctxUtil, mathUtil } from './utils/utils.js';
 let ctx;
 let canvasWidth;
 let canvasHeight;
+let canvasCenterX;
+let canvasCenterY;
 
 let backgroundColor;
 
 let analyserNode;
 let audioData;
 
+// Polygon data
+const frequencyScalar = 1.9;
+
+// Pulses data
+const triggerThreashold = 40;
+
+// Average Circle data
+const averageRadiusScalar = 1.1;
+let averageCircleGradient;
+
 const setupCanvas = (canvasElement, analyserNodeRef, audioDataRef) => {
     // Create drawing context
     ctx = canvasElement.getContext("2d");
     canvasWidth = canvasElement.width;
     canvasHeight = canvasElement.height;
+    canvasCenterX = canvasWidth / 2;
+    canvasCenterY = canvasHeight / 2;
 
     // Define the background color
     backgroundColor = "rba(0, 0, 0, .1)";
+
+    averageCircleGradient = ctxUtil.getRadialGradient(ctx, canvasCenterX, 0, canvasCenterX, canvasHeight, -1, 1, [
+        { percent: 0, color: '#ffdd00' },
+        { percent: 1, color: '#cc6600' }
+    ]);
 
     // Keep a reference to the analyser node
     analyserNode = analyserNodeRef
@@ -31,35 +50,28 @@ const draw = (params = {}) => {
     //analyserNode.getByteTimeDomainData(audioData); // waveform data
 
     // Draw background
-    ctxUtil.fillBackground(ctx, backgroundColor);
+    ctxUtil.fillRectangle(ctx, 0, 0, canvasWidth, canvasHeight, backgroundColor);
 
     // Draw polygon
-    let centerX = canvasWidth / 2;
-    let centerY = canvasHeight / 2;
-    let baseR = 50;
-    let frequencyScalar = 0.5;
-    let rScalar = 0.75;
+    const numPoints = audioData.length;
 
-    let points = new Array();
-
-    let minFreq = 20;
-    let maxFreq = [...audioData].indexOf(0);
     let theta = 0;
-    let numPoints = maxFreq - minFreq;
     const dTheta = 2 * Math.PI / numPoints;
 
-    for (let i = minFreq; i < maxFreq; i++) {
-        let thetaScalar;
-        if (theta < -3 * Math.PI / 2)
-            thetaScalar = (Math.abs(theta) ** 0.2);
-        else
-            thetaScalar = 1;
-        const cos = Math.cos(theta);
-        const sin = Math.sin(theta);
+    let points = new Array();
+    for (let i = 0; i < numPoints; i++) {
         points.push({
-            x: centerX + rScalar * (baseR * cos + frequencyScalar * audioData[i] * cos) * thetaScalar,
-            y: centerY + rScalar * (baseR * sin + frequencyScalar * audioData[i] * sin) * thetaScalar
+
+            x: canvasCenterX + frequencyScalar * audioData[i] * Math.cos(theta),
+            y: canvasCenterY + frequencyScalar * audioData[i] * Math.sin(theta)
         });
+
+        // Draw pulses
+        let delta = mathUtil.getDelta(audioData, i, Math.min(i + 10, audioData.length));
+        // delta frequency is big enough, trigger
+        if (delta > triggerThreashold) {
+            // TODO draw pulses
+        }
 
         theta -= dTheta;
     }
@@ -68,9 +80,9 @@ const draw = (params = {}) => {
 
     // Draw average loudness circle
     let average = mathUtil.average(...audioData);
-    ctxUtil.fillCircle(ctx, centerX, centerY, average * 0.3, "darkblue");
+    ctxUtil.fillCircle(ctx, canvasCenterX, canvasCenterY, average * averageRadiusScalar, averageCircleGradient);
 
-    // Bitmap manipulation (only if an)
+    // Bitmap manipulation
     let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
     let data = imageData.data;
     let length = data.length;
@@ -81,12 +93,19 @@ const draw = (params = {}) => {
     // data[i+2] is the blue channel
     // data[i+3] is the alpha channel
     for (let i = 0; i < length; i += 4) {
-        // White Noise
+        // Noise
         if (params.showNoise && Math.random() < .05) {
+            let color;
+
+            if (params.noiseColor)
+                color = mathUtil.Convert.hexToRgb(params.noiseColor);
+            else
+                color = { r: 255, g: 255, b: 255 };
+
             // Make all channels 100%
-            data[i] = 255;
-            data[i + 1] = 255;
-            data[i + 2] = 255;
+            data[i] = color.r;
+            data[i + 1] = color.g;
+            data[i + 2] = color.b;
         }
         // Invert
         if (params.showInvert) {
