@@ -12,8 +12,10 @@
 
 <body>
     <main>
-        <canvas></canvas>
         <h1>Radial Audio Visualizer</h1>
+        <p>Scroll down for controls</p>
+        <canvas></canvas>
+
         <div id="controls">
 
             <section>
@@ -33,8 +35,8 @@
             </section>
 
             <section id="checkboxes">
-                <h2>Bitmap Manipulations</h2>
                 <section id="bitmapManipulations" class="checkboxSection">
+                    <h2>Bitmap Manipulations</h2>
                     <span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label><input type="color"
                             id="noiseColor">
                         <labal for="noiseColor">Noise Color</labal>
@@ -43,8 +45,8 @@
                     <span><input type="checkbox" id="embossCB"><label for="embossCB">Show Emboss</label></span>
                 </section>
 
-                <h2>Audio Nodes</h2>
                 <section id="audioNodes" class="checkboxSection">
+                    <h2>Audio Nodes</h2>
                     <span><input type="checkbox" id="highshelfCB"><label for="highshelfCB">Highshelf Filter
                             (Treble)</label></span>
                     <span><input type="checkbox" id="lowshelfCB"><label for="lowshelfCB">Lowshelf Filter
