@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <title>Audio Visualizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link href="styles/index-styles.css" type="text/css" rel="stylesheet" />
     <script src="./src/loader.js" type="module"></script>
 </head>
@@ -11,6 +13,7 @@
 <body>
     <main>
         <canvas></canvas>
+        <h1>Radial Audio Visualizer</h1>
         <div id="controls">
 
             <section>
@@ -29,20 +32,28 @@
                 </label>
             </section>
 
-            <section id="bitmapManipulations" class="checkboxSection">
-                <span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label><input type="color" id="noiseColor"><labal for="noiseColor">Noise Color</labal></span>
-                <span><input type="checkbox" id="invertCB"><label for="invertCB">Invert Colors</label></span>
-                <span><input type="checkbox" id="embossCB"><label for="embossCB">Show Emboss</label></span>
+            <section id="checkboxes">
+                <h2>Bitmap Manipulations</h2>
+                <section id="bitmapManipulations" class="checkboxSection">
+                    <span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label><input type="color"
+                            id="noiseColor">
+                        <labal for="noiseColor">Noise Color</labal>
+                    </span>
+                    <span><input type="checkbox" id="invertCB"><label for="invertCB">Invert Colors</label></span>
+                    <span><input type="checkbox" id="embossCB"><label for="embossCB">Show Emboss</label></span>
+                </section>
+
+                <h2>Audio Nodes</h2>
+                <section id="audioNodes" class="checkboxSection">
+                    <span><input type="checkbox" id="highshelfCB"><label for="highshelfCB">Highshelf Filter
+                            (Treble)</label></span>
+                    <span><input type="checkbox" id="lowshelfCB"><label for="lowshelfCB">Lowshelf Filter
+                            (Bass)</label></span>
+                    <span><input type="checkbox" id="distortionCB"><label for="distortionCB">Distortion</label></span>
+                    <span>0 <input type="range" min="0" max="100" value="0" id="distortionSlider"> 100</span>
+                </section>
             </section>
 
-            <section id="audioNodes" class="checkboxSection">
-                <span><input type="checkbox" id="highshelfCB"><label for="highshelfCB">Highshelf Filter
-                        (Treble)</label></span>
-                <span><input type="checkbox" id="lowshelfCB"><label for="lowshelfCB">Lowshelf Filter
-                        (Bass)</label></span>
-                <span><input type="checkbox" id="distortionCB"><label for="distortionCB">Distortion</label></span>
-                <span>0 <input type="range" min="0" max="100" value="0" id="distortionSlider"> 100</span>
-            </section>
         </div>
     </main>
 </body>

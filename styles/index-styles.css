@@ -1,6 +1,7 @@
 body {
     background: black;
     color: white;
+    font-family: 'Open Sans', sans-serif;
 }
 
 canvas {
@@ -9,12 +10,15 @@ canvas {
     width: 100%;
 }
 
-#controls {
-    margin-left: 1rem;
+h1,
+h2,
+h3 {
+    font-family: 'Ubuntu', sans-serif;
 }
 
+#controls,
 section {
-    margin-bottom: 1rem;
+    margin: 1rem;
 }
 
 section>* {
@@ -31,6 +35,11 @@ section>* {
     flex-flow: column;
 }
 
+#checkboxes {
+    display: flex;
+    flex-flow: row wrap;
+}
+
 .checkboxSection>* {
     margin-bottom: 1rem;
 }
@@ -39,9 +48,6 @@ label {
     margin-right: 2.4rem;
 }
 
-input[type="color"],
-input[type="checkbox"] {
+input {
     margin-right: 0.5rem;
 }
-
-{}
