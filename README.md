@@ -96,7 +96,8 @@ TODO
 
 ## Log
 
-|  Date   | Description                             |
-|:-------:|-----------------------------------------|
-| 9/18/20 | Created repo                            |
-| 9/19/20 | Created radial audio visualizer polygon |
+|  Date   | Description                                                                               |
+|:-------:|-------------------------------------------------------------------------------------------|
+| 9/18/20 | Created repo                                                                              |
+| 9/19/20 | Created radial audio visualizer polygon                                                   |
+| 9/20/20 | Created average power circle and implemented previous bitmap operations and audio filters |
