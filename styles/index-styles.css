@@ -51,3 +51,8 @@ label {
 input {
     margin-right: 0.5rem;
 }
+
+input[type="file"] {
+    font-family: inherit;
+    font-size: inherit;
+}

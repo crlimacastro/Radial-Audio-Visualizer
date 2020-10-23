@@ -101,3 +101,5 @@ TODO
 | 9/18/20 | Created repo                                                                              |
 | 9/19/20 | Created radial audio visualizer polygon                                                   |
 | 9/20/20 | Created average power circle and implemented previous bitmap operations and audio filters |
+| 9/21/20 | Created grayscale and tint effects. Added Track upload option for playing any sounds      |
+| 9/22/20 | Created sepia effect. Added noise amount slider                                           |

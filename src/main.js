@@ -5,8 +5,13 @@ import * as audioVisualizer from './visualizer.js';
 const drawParams = {
     showNoise: false,
     noiseColor: '#ffffff',
+    noisePercent: .05,
+    showTint: false,
+    tintColor: '#ff3333',
+    showSepia: false,
     showInvert: false,
-    showEmboss: false
+    showEmboss: false,
+    showGrayscale: false,
 };
 
 const audioParams = {
@@ -20,10 +25,13 @@ const DEFAULT = Object.freeze({
     sound: "media/New Adventure Theme.mp3"
 });
 
+let audioElement;
+let canvasElement;
+
 function init() {
-    let audioElement = document.querySelector("audio");
-    let canvasElement = document.querySelector("canvas");
-    canvasElement.width = 1980;
+    audioElement = document.querySelector("audio");
+    canvasElement = document.querySelector("canvas");
+    canvasElement.width = 1920;
     canvasElement.height = 1080;
 
     audio.setupWebaudio(DEFAULT.sound, audioElement);
@@ -45,6 +53,12 @@ function setupUI(canvasElement) {
         audio.loadSoundFile(e.target.value);
     };
 
+    const trackFile = document.querySelector("#trackFile");
+    trackFile.onchange = e => {
+        if (e.target.files[0])
+            audioElement.src = URL.createObjectURL(e.target.files[0]);
+    };
+
     // DrawParams checkboxes
     let noiseCB = document.querySelector("#noiseCB");
     noiseCB.checked = drawParams.showNoise;
@@ -52,12 +66,27 @@ function setupUI(canvasElement) {
     let noiseColor = document.querySelector("#noiseColor");
     noiseColor.value = drawParams.noiseColor;
     noiseColor.oninput = e => { drawParams.noiseColor = e.target.value; };
+    let noisePercent = document.querySelector('#noisePercent');
+    noisePercent.value = drawParams.noisePercent;
+    noisePercent.oninput = e => { drawParams.noisePercent = Number(e.target.value); };
+    let tintCB = document.querySelector('#tintCB');
+    tintCB.value = drawParams.showTint;
+    tintCB.onchange = e => { drawParams.showTint = e.target.checked };
+    let tintColor = document.querySelector("#tintColor");
+    tintColor.value = drawParams.tintColor;
+    tintColor.oninput = e => { drawParams.tintColor = e.target.value; };
+    let sepiaCB = document.querySelector('#sepiaCB');
+    sepiaCB.checked = drawParams.showSepia;
+    sepiaCB.onchange = e => { drawParams.showSepia = e.target.checked };
     let invertCB = document.querySelector("#invertCB");
     invertCB.checked = drawParams.showInvert;
     invertCB.onchange = e => { drawParams.showInvert = e.target.checked };
     let embossCB = document.querySelector("#embossCB");
     embossCB.checked = drawParams.showEmboss;
     embossCB.onchange = e => { drawParams.showEmboss = e.target.checked };
+    let grayscaleCB = document.querySelector("#grayscaleCB");
+    grayscaleCB.checked = drawParams.showGrayscale;
+    grayscaleCB.onchange = e => { drawParams.showGrayscale = e.target.checked };
 
     // Audio checkboxes
     let highshelfCB = document.querySelector("#highshelfCB");

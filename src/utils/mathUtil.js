@@ -16,13 +16,19 @@ const Convert = {
 
         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
     },
-    hexToRgb(hex) {
-        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16)
-        } : null;
+    hexToRgb(hex, alpha = 1) {
+        let r = parseInt(hex.substring(1, 3), 16);
+        let g = parseInt(hex.substring(3, 5), 16);
+        let b = parseInt(hex.substring(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    },
+    hexToRgbObj(hex, alpha = 1) {
+        return {
+            r: parseInt(hex.substring(1, 3), 16),
+            g: parseInt(hex.substring(3, 5), 16),
+            b: parseInt(hex.substring(5, 7), 16),
+            a: alpha
+        };
     }
 
 }

@@ -32,25 +32,46 @@
                         <option value="media/The Picard Song.mp3">The Picard Song</option>
                     </select>
                 </label>
+
+                <label>Track Upload:
+                    <input type="file" id="trackFile">
+                </label>
+
             </section>
 
             <section id="checkboxes">
                 <section id="bitmapManipulations" class="checkboxSection">
                     <h2>Bitmap Manipulations</h2>
-                    <span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label><input type="color"
-                            id="noiseColor">
-                        <labal for="noiseColor">Noise Color</labal>
+                    <span>
+                        <input type="checkbox" id="noiseCB">
+                        <label for="noiseCB">Noise</label>
+                        <input type="color" id="noiseColor">
+                        <label for="noiseColor">Noise Color</label>
+                        <input type="range" min=".01" max=".1" value=".05" step=".01" id="noisePercent">
+                        <label for="noisePercent">Noise Amount</label>
                     </span>
+                    <span>
+                        <input type="checkbox" id="tintCB">
+                        <label for="tintCB">Tint</label>
+                        <input type="color" id="tintColor">
+                        <label for="tintColor">Tint Color</label>
+                    </span>
+                    <span><input type="checkbox" id="sepiaCB"><label for="sepiaCB">Sepia</label></span>
                     <span><input type="checkbox" id="invertCB"><label for="invertCB">Invert Colors</label></span>
-                    <span><input type="checkbox" id="embossCB"><label for="embossCB">Show Emboss</label></span>
+                    <span><input type="checkbox" id="embossCB"><label for="embossCB">Emboss</label></span>
+                    <span><input type="checkbox" id="grayscaleCB"><label for="grayscaleCB">Grayscale</label></span>
                 </section>
 
                 <section id="audioNodes" class="checkboxSection">
                     <h2>Audio Nodes</h2>
-                    <span><input type="checkbox" id="highshelfCB"><label for="highshelfCB">Highshelf Filter
-                            (Treble)</label></span>
-                    <span><input type="checkbox" id="lowshelfCB"><label for="lowshelfCB">Lowshelf Filter
-                            (Bass)</label></span>
+                    <span>
+                        <input type="checkbox" id="highshelfCB">
+                        <label for="highshelfCB">Highshelf Filter(Treble)</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="lowshelfCB">
+                        <label for="lowshelfCB">Lowshelf Filter (Bass)</label>
+                    </span>
                     <span><input type="checkbox" id="distortionCB"><label for="distortionCB">Distortion</label></span>
                     <span>0 <input type="range" min="0" max="100" value="0" id="distortionSlider"> 100</span>
                 </section>
