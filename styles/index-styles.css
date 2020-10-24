@@ -46,6 +46,7 @@ section>* {
 
 label {
     margin-right: 2.4rem;
+    white-space: nowrap;
 }
 
 input {

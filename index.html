@@ -13,7 +13,7 @@
 <body>
     <main>
         <h1>Radial Audio Visualizer</h1>
-        <p>Scroll down for controls</p>
+        <p>Controls below</p>
         <canvas></canvas>
 
         <div id="controls">
@@ -30,6 +30,7 @@
                         <option value="media/New Adventure Theme.mp3" selected>New Adventure Theme</option>
                         <option value="media/Peanuts Theme.mp3">Peanuts Theme</option>
                         <option value="media/The Picard Song.mp3">The Picard Song</option>
+                        <option value="media/Dandelion Clearing.mp3">Dandelion Clearing</option>
                     </select>
                 </label>
 
@@ -41,7 +42,7 @@
 
             <section id="checkboxes">
                 <section id="bitmapManipulations" class="checkboxSection">
-                    <h2>Bitmap Manipulations</h2>
+                    <h2>Image</h2>
                     <span>
                         <input type="checkbox" id="noiseCB">
                         <label for="noiseCB">Noise</label>
@@ -63,7 +64,7 @@
                 </section>
 
                 <section id="audioNodes" class="checkboxSection">
-                    <h2>Audio Nodes</h2>
+                    <h2>Audio</h2>
                     <span>
                         <input type="checkbox" id="highshelfCB">
                         <label for="highshelfCB">Highshelf Filter(Treble)</label>
@@ -72,8 +73,31 @@
                         <input type="checkbox" id="lowshelfCB">
                         <label for="lowshelfCB">Lowshelf Filter (Bass)</label>
                     </span>
-                    <span><input type="checkbox" id="distortionCB"><label for="distortionCB">Distortion</label></span>
-                    <span>0 <input type="range" min="0" max="100" value="0" id="distortionSlider"> 100</span>
+                    <span>
+                        <label for="reverbRBs">Reverb:</label>
+                        <input type="radio" name="reverbRBs" id="noReverbRB" value="" checked>
+                        <label for="noReverbRB">None</label>
+                        <input type="radio" name="reverbRBs" id="smallRoomRB" value="media/reverbs/Nice Drum Room.wav">
+                        <label for="smallRoomRB">Small Room</label>
+                        <input type="radio" name="reverbRBs" id="garageRB" value="media/reverbs/Parking Garage.wav">
+                        <label for="garageRB">Parking Garage</label>
+                        <input type="radio" name="reverbRBs" id="largeHallReverbRB"
+                            value="media/reverbs/Large Long Echo Hall.wav">
+                        <label for="largeHallReverbRB">Large Hall</label>
+                        <input type="radio" name="reverbRBs" id="starRB" value="media/reverbs/On a Star.wav">
+                        <label for="starRB">On a Star</label>
+                    </span>
+                    <span>
+                        <label for="distortionRBs">Distortion:</label>
+                        <input type="radio" name="distortionRBs" id="noDistortionRB" checked>
+                        <label for="noDistortionRB">None</label>
+                        <input type="radio" name="distortionRBs" id="breakageRB">
+                        <label for="breakageRB">Audio Breakage</label>
+                        <input type="radio" name="distortionRBs" id="retroRB">
+                        <label for="retroRB">Retro</label>
+                        <input type="range" min="0" max="100" value="0" id="distortionSlider">
+                        <label for="distortionSlider">DistortionAmount</label>
+                    </span>
                 </section>
             </section>
 
