@@ -375,6 +375,27 @@ const fillRadialGradient = (ctx, gradient, x, y, r) => {
     ctx.restore();
 }
 
+const strokeQuadraticCurve = (ctx, x1, y1, cpx, cpy, x2, y2, color = "black", strokeWidth = 1) => {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.quadraticCurveTo(cpx, cpy, x2, y2);
+    ctx.lineWidth = strokeWidth;
+    ctx.strokeStyle = color;
+    ctx.stroke();
+    ctx.restore();
+}
+
+const strokeBezierCurve = (ctx, x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2, color = "black", strokeWidth = 1) => {
+    ctx.save();
+    ctx.moveTo(x1, y1);
+    ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x2, y2);
+    ctx.lineWidth = strokeWidth;
+    ctx.strokeStyle = color;
+    ctx.stroke();
+    ctx.restore();
+}
+
 export {
     clear,
     fillBackground,
@@ -401,5 +422,7 @@ export {
     getLinearGradient,
     fillLinearGradient,
     getRadialGradient,
-    fillRadialGradient
+    fillRadialGradient,
+    strokeQuadraticCurve,
+    strokeBezierCurve
 }

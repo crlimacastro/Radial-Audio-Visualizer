@@ -26,7 +26,10 @@ const DISTORTION_TYPE = Object.freeze({
 });
 
 // Array of 8-bit integers (0-255) to hold the audio frequency data
-let audioData = new Uint8Array(DEFAULTS.numSamples / 2);
+let byteFrequencyData = new Uint8Array(DEFAULTS.numSamples / 2);
+let floatFrequencyData = new Float32Array(DEFAULTS.numSamples / 2);
+let byteWaveformData = new Uint8Array(DEFAULTS.numSamples / 2);
+let floatWaveformData = new Float32Array(DEFAULTS.numSamples / 2);
 
 const setupWebaudio = (filePath, audioSource = undefined) => {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -76,6 +79,26 @@ const pauseCurrentSound = () => {
 const setVolume = (value) => {
     value = Number(value); // make sure that it's a Number rather than a String
     gainNode.gain.value = value;
+}
+
+const getByteFrequencyData = () => {
+    analyserNode.getByteFrequencyData(byteFrequencyData);
+    return byteFrequencyData;
+}
+
+const getFloatFrequencyData = () => {
+    analyserNode.getFloatFrequencyData(floatFrequencyData);
+    return floatFrequencyData
+}
+
+const getByteWaveformData = () => {
+    analyserNode.getByteTimeDomainData(byteWaveformData);
+    return byteWaveformData;
+}
+
+const getFloatWaveformData = () => {
+    analyserNode.getFloatTimeDomainData(floatWaveformData);
+    return floatWaveformData;
 }
 
 const toggleHighshelf = (highshelf) => {
@@ -157,13 +180,16 @@ function attachBuffer(convolverNode, src) {
 
 export {
     audioCtx,
-    audioData,
     setupWebaudio,
     loadSoundFile,
     playCurrentSound,
     pauseCurrentSound,
     setVolume,
     analyserNode,
+    getByteFrequencyData,
+    getFloatFrequencyData,
+    getByteWaveformData,
+    getFloatWaveformData,
     toggleHighshelf,
     toggleLowshelf,
     toggleReverb,

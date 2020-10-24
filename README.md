@@ -92,6 +92,8 @@ TODO
 
 IM Reverbs Pack from voxengo.com at https://www.voxengo.com/impulses/
 
+Dream Sweet in Sea Major by Miracle Musical at https://www.youtube.com/watch?v=uxyM7vhU0uU
+
 ------------------------------------
 
 ## Log
@@ -103,4 +105,4 @@ IM Reverbs Pack from voxengo.com at https://www.voxengo.com/impulses/
 | 10/20/20 | Created average power circle and implemented previous bitmap operations and audio filters |
 | 10/21/20 | Created grayscale and tint effects. Added Track upload option for playing any sounds      |
 | 10/22/20 | Created sepia effect. Added noise amount slider                                           |
-| 10/23/20 |                                                                                           |
+| 10/23/20 | Created reverb effect. Created waveform visualizer. Optimized scripts                     |

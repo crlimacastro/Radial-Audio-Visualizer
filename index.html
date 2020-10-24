@@ -27,9 +27,9 @@
 
                 <label>Track:
                     <select id="trackSelect">
-                        <option value="media/New Adventure Theme.mp3" selected>New Adventure Theme</option>
-                        <option value="media/Peanuts Theme.mp3">Peanuts Theme</option>
-                        <option value="media/The Picard Song.mp3">The Picard Song</option>
+                        <option value="media/Dream Sweet in Sea Major.mp3">Dream Sweet in Sea Major - Miracle Musical
+                        </option>
+                        <option value="media/New Adventure Theme.mp3">New Adventure Theme</option>
                         <option value="media/Dandelion Clearing.mp3">Dandelion Clearing</option>
                     </select>
                 </label>
@@ -40,63 +40,137 @@
 
             </section>
 
-            <section id="checkboxes">
-                <section id="bitmapManipulations" class="checkboxSection">
-                    <h2>Image</h2>
-                    <span>
-                        <input type="checkbox" id="noiseCB">
-                        <label for="noiseCB">Noise</label>
-                        <input type="color" id="noiseColor">
-                        <label for="noiseColor">Noise Color</label>
-                        <input type="range" min=".01" max=".1" value=".05" step=".01" id="noisePercent">
-                        <label for="noisePercent">Noise Amount</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="tintCB">
-                        <label for="tintCB">Tint</label>
-                        <input type="color" id="tintColor">
-                        <label for="tintColor">Tint Color</label>
-                    </span>
-                    <span><input type="checkbox" id="sepiaCB"><label for="sepiaCB">Sepia</label></span>
-                    <span><input type="checkbox" id="invertCB"><label for="invertCB">Invert Colors</label></span>
-                    <span><input type="checkbox" id="embossCB"><label for="embossCB">Emboss</label></span>
-                    <span><input type="checkbox" id="grayscaleCB"><label for="grayscaleCB">Grayscale</label></span>
+            <section id="controls">
+                <section id="show" class="controlSection">
+                    <h2>Show</h2>
+                    <label for="showFrequencyCB">
+                        <input type="checkbox" id="showFrequencyCB">
+                        Frequency
+                    </label>
+
+                    <label for="showWaveformCB">
+                        <input type="checkbox" id="showWaveformCB">
+                        Waveform
+                    </label>
+
+                    <label for="showAverageCB">
+                        <input type="checkbox" id="showAverageCB">
+                        Average Frequency Circle
+                    </label>
                 </section>
 
-                <section id="audioNodes" class="checkboxSection">
+                <section id="bitmapManipulations" class="controlSection">
+                    <h2>Image</h2>
+                    <label for="noiseCB">
+                        <input type="checkbox" id="noiseCB">
+                        Noise
+                    </label>
+
+                    <label for="noiseColor">
+                        <input type="color" id="noiseColor">
+                        Noise Color
+                    </label>
+
+                    <label for="noisePercent">
+                        <input type="range" min=".01" max=".1" value=".05" step=".01" id="noisePercent">
+                        Noise Amount
+                    </label>
+                    <label for="tintCB">
+                        <input type="checkbox" id="tintCB">
+                        Tint
+                    </label>
+
+                    <label for="tintColor">
+                        <input type="color" id="tintColor">
+                        Tint Color
+                    </label>
+
+                    <label for="sepiaCB">
+                        <input type="checkbox" id="sepiaCB">
+                        Sepia
+                    </label>
+
+                    <label for="invertCB">
+                        <input type="checkbox" id="invertCB">
+                        Invert Colors
+                    </label>
+
+                    <label for="embossCB">
+                        <input type="checkbox" id="embossCB">
+                        Emboss
+                    </label>
+
+                    <label for="grayscaleCB">
+                        <input type="checkbox" id="grayscaleCB">
+                        Grayscale
+                    </label>
+                </section>
+
+                <section id="audioNodes" class="controlSection">
                     <h2>Audio</h2>
-                    <span>
+                    <label for="highshelfCB">
                         <input type="checkbox" id="highshelfCB">
-                        <label for="highshelfCB">Highshelf Filter(Treble)</label>
-                    </span>
-                    <span>
+                        Highshelf Filter (Treble)
+                    </label>
+
+                    <label for="lowshelfCB">
                         <input type="checkbox" id="lowshelfCB">
-                        <label for="lowshelfCB">Lowshelf Filter (Bass)</label>
-                    </span>
+                        Lowshelf Filter (Bass)
+                    </label>
+
                     <span>
-                        <label for="reverbRBs">Reverb:</label>
-                        <input type="radio" name="reverbRBs" id="noReverbRB" value="" checked>
-                        <label for="noReverbRB">None</label>
-                        <input type="radio" name="reverbRBs" id="smallRoomRB" value="media/reverbs/Nice Drum Room.wav">
-                        <label for="smallRoomRB">Small Room</label>
-                        <input type="radio" name="reverbRBs" id="garageRB" value="media/reverbs/Parking Garage.wav">
-                        <label for="garageRB">Parking Garage</label>
-                        <input type="radio" name="reverbRBs" id="largeHallReverbRB"
-                            value="media/reverbs/Large Long Echo Hall.wav">
-                        <label for="largeHallReverbRB">Large Hall</label>
-                        <input type="radio" name="reverbRBs" id="starRB" value="media/reverbs/On a Star.wav">
-                        <label for="starRB">On a Star</label>
+                        <h3>Reverb:</h3>
+
+                        <label for="noReverbRB">
+                            <input type="radio" name="reverbRBs" id="noReverbRB" value="" checked>
+                            None
+                        </label>
+
+                        <label for="smallRoomRB">
+                            <input type="radio" name="reverbRBs" id="smallRoomRB"
+                                value="media/reverbs/Nice Drum Room.wav">
+                            Small Room
+                        </label>
+
+                        <label for="garageRB">
+                            <input type="radio" name="reverbRBs" id="garageRB" value="media/reverbs/Parking Garage.wav">
+                            Parking Garage
+                        </label>
+
+                        <label for="largeHallReverbRB">
+                            <input type="radio" name="reverbRBs" id="largeHallReverbRB"
+                                value="media/reverbs/Large Long Echo Hall.wav">
+                            Large Hall
+                        </label>
+
+                        <label for="starRB">
+                            <input type="radio" name="reverbRBs" id="starRB" value="media/reverbs/On a Star.wav">
+                            On a Star
+                        </label>
                     </span>
+
                     <span>
-                        <label for="distortionRBs">Distortion:</label>
-                        <input type="radio" name="distortionRBs" id="noDistortionRB" checked>
-                        <label for="noDistortionRB">None</label>
-                        <input type="radio" name="distortionRBs" id="breakageRB">
-                        <label for="breakageRB">Audio Breakage</label>
-                        <input type="radio" name="distortionRBs" id="retroRB">
-                        <label for="retroRB">Retro</label>
-                        <input type="range" min="0" max="100" value="0" id="distortionSlider">
-                        <label for="distortionSlider">DistortionAmount</label>
+                        <h3>Distortion:</h3>
+
+                        <label for="noDistortionRB">
+                            <input type="radio" name="distortionRBs" id="noDistortionRB" checked>
+                            None
+                        </label>
+
+                        <label for="breakageRB">
+                            <input type="radio" name="distortionRBs" id="breakageRB">
+                            Audio Breakage
+                        </label>
+
+                        <label for="retroRB">
+                            <input type="radio" name="distortionRBs" id="retroRB">
+                            Retro
+                        </label>
+
+                        <label for="distortionSlider">
+                            <input type="range" min="0" max="100" value="0" id="distortionSlider">
+                            DistortionAmount
+                        </label>
                     </span>
                 </section>
             </section>

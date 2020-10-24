@@ -30,18 +30,18 @@ section>* {
     width: 8rem;
 }
 
-.checkboxSection {
+.controlSection {
     display: flex;
     flex-flow: column;
 }
 
-#checkboxes {
-    display: flex;
-    flex-flow: row wrap;
+.controlSection>* {
+    margin-bottom: 1rem;
 }
 
-.checkboxSection>* {
-    margin-bottom: 1rem;
+#controls {
+    display: flex;
+    flex-flow: row wrap;
 }
 
 label {

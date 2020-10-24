@@ -3,6 +3,9 @@ import * as audio from './audio.js';
 import * as audioVisualizer from './visualizer.js';
 
 const drawParams = {
+    showFrequency: true,
+    showWaveform: true,
+    showAverage: true,
     showNoise: false,
     noiseColor: '#ffffff',
     noisePercent: .05,
@@ -22,7 +25,7 @@ const audioParams = {
 };
 
 const DEFAULT = Object.freeze({
-    sound: "media/New Adventure Theme.mp3"
+    sound: "media/Dream Sweet in Sea Major.mp3"
 });
 
 let audioElement;
@@ -36,7 +39,7 @@ function init() {
 
     audio.setupWebaudio(DEFAULT.sound, audioElement);
     setupUI(canvasElement);
-    audioVisualizer.setupCanvas(canvasElement, audio.analyserNode, audio.audioData);
+    audioVisualizer.setupCanvas(canvasElement);
 
     loop();
 }
@@ -49,6 +52,13 @@ function setupUI(canvasElement) {
     };
 
     const trackSelect = document.querySelector("#trackSelect");
+    // Set default sound
+    for (let i = 0; i < trackSelect.options.length; i++) {
+        if (trackSelect.options[i].value == DEFAULT.sound) {
+            trackSelect.selectedIndex = i;
+            break;
+        }
+    }
     trackSelect.onchange = e => {
         audio.loadSoundFile(e.target.value);
     };
@@ -59,7 +69,18 @@ function setupUI(canvasElement) {
             audioElement.src = URL.createObjectURL(e.target.files[0]);
     };
 
-    // DrawParams checkboxes
+    // Show checkboxes
+    let showFrequencyCB = document.querySelector("#showFrequencyCB");
+    showFrequencyCB.checked = drawParams.showFrequency;
+    showFrequencyCB.onchange = e => { drawParams.showFrequency = e.target.checked };
+    let showWaveformCB = document.querySelector("#showWaveformCB");
+    showWaveformCB.checked = drawParams.showWaveform;
+    showWaveformCB.onchange = e => { drawParams.showWaveform = e.target.checked };
+    let showAverageCB = document.querySelector("#showAverageCB");
+    showAverageCB.checked = drawParams.showAverage;
+    showAverageCB.onchange = e => { drawParams.showAverage = e.target.checked };
+
+    // Bitmap manipulation checkboxes
     // Noise
     let noiseCB = document.querySelector("#noiseCB");
     noiseCB.checked = drawParams.showNoise;

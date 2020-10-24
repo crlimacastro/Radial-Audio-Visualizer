@@ -1,5 +1,5 @@
-import { fillRadialGradient } from './utils/ctxUtil.js';
 import { ctxUtil, mathUtil } from './utils/utils.js';
+import * as audio from './audio.js';
 
 const Circle = class {
     constructor(x, y, r) {
@@ -26,19 +26,25 @@ let canvasCenterY;
 let backgroundColor;
 
 let analyserNode;
-let audioData;
 
 
 // Polygon data
-const points = [];
-const frequencyScalar = 1.9;
+const polygonPoints = [];
+const frequencyScalar = 2.4;
 let polygonGradient;
 
 // Average Circle data
-const averageRadiusScalar = 1.1;
+const averageScalar = 1.5;
 let averageCircleGradient;
 
-const setupCanvas = (canvasElement, analyserNodeRef, audioDataRef) => {
+// Waveform data
+const waveformPoints = [];
+const waveformScalar = .008;
+const waveformColor = "white";
+const waveformWidth = 3;
+
+
+const setupCanvas = (canvasElement) => {
     // Create drawing context
     ctx = canvasElement.getContext("2d");
     canvasWidth = canvasElement.width;
@@ -70,60 +76,87 @@ const setupCanvas = (canvasElement, analyserNodeRef, audioDataRef) => {
             { percent: 0, color: '#ffdd00' },
             { percent: 1, color: '#cc6600' }
         ]);
-
-    // Keep a reference to the analyser node
-    analyserNode = analyserNodeRef
-        // Array where the analyser data will be stored
-    audioData = audioDataRef;
 }
 
 const draw = (params = {}) => {
-    // Populate the audioData array with the frequency data from the analyserNode
-    analyserNode.getByteFrequencyData(audioData);
-    // OR
-    // analyserNode.getByteTimeDomainData(audioData); // waveform data
-
     // Draw background
     ctxUtil.fillRectangle(ctx, 0, 0, canvasWidth, canvasHeight, backgroundColor);
 
-    // Draw polygon
-    const numPoints = audioData.length;
 
-    let theta = 0;
-    const dTheta = 2 * Math.PI / numPoints;
+    if (params.showFrequency ||
+        params.showAverage ||
+        params.showWaveform) {
+        // Only grab frequency data if needed for
+        // any of the visualizer shapes
+        let frequencyData = audio.getByteFrequencyData();
 
-    // Clear points array
-    points.length = 0;
-    for (let i = 0; i < numPoints; i++) {
-        points.push({
-            x: canvasCenterX + frequencyScalar * audioData[i] * Math.cos(theta),
-            y: canvasCenterY + frequencyScalar * audioData[i] * Math.sin(theta)
-        });
+        if (params.showFrequency) {
+            // Draw frequency polygon
+            let theta = 0;
+            let dTheta = 2 * Math.PI / frequencyData.length;
+            // Clear polygon points array
+            polygonPoints.length = 0;
+            // Populate polygon points array
+            for (let i = 0; i < frequencyData.length; i++) {
+                polygonPoints.push({
+                    x: canvasCenterX + frequencyScalar * frequencyData[i] * Math.cos(theta),
+                    y: canvasCenterY + frequencyScalar * frequencyData[i] * Math.sin(theta)
+                });
 
-        theta -= dTheta;
+                theta -= dTheta;
+            }
+            // Draw polygon
+            if (polygonPoints.length > 3)
+                ctxUtil.fillPolygon(ctx, polygonPoints, polygonGradient);
+        }
+
+        if (params.showAverage || params.showWaveform) {
+            // Only get the average if needed for
+            // average circle or waveform
+            let average = mathUtil.average(...frequencyData);
+
+            if (params.showAverage) {
+                // Draw average loudness circle
+                ctxUtil.fillCircle(ctx, canvasCenterX, canvasCenterY, averageScalar * average, averageCircleGradient);
+            }
+
+            if (params.showWaveform) {
+                let waveformData = audio.getByteWaveformData();
+
+                // Draw waveform
+                let x = canvasCenterX - average * averageScalar;
+                let dx = average * averageScalar * 2 / waveformData.length;
+                // Clear waveform points array
+                waveformPoints.length = 0;
+                // Populate waveform points array
+                waveformPoints.push({ x: canvasCenterX - average * averageScalar, y: canvasCenterY });
+                for (let i = 0; i < waveformData.length - 1; i++) {
+                    x += dx;
+                    waveformPoints.push({
+                        x: x,
+                        y: canvasCenterY + (waveformData[i] - 128) * waveformScalar * average
+                    });
+                }
+                waveformPoints.push({ x: canvasCenterX + average * averageScalar, y: canvasCenterY });
+                // Draw waveform
+                ctxUtil.strokeLines(ctx, waveformPoints, waveformColor, waveformWidth);
+            }
+        }
     }
-    if (points.length > 3)
-        ctxUtil.fillPolygon(ctx, points, polygonGradient);
-
-    // Draw average loudness circle
-    let average = mathUtil.average(...audioData);
-    ctxUtil.fillCircle(ctx, canvasCenterX, canvasCenterY, average * averageRadiusScalar, averageCircleGradient);
 
     // Bitmap manipulation
-    let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-    let data = imageData.data;
-    let length = data.length;
-    let width = imageData.width;
-
-    // data[i] is the red channel
-    // data[i+1] is the green channel
-    // data[i+2] is the blue channel
-    // data[i+3] is the alpha channel
     if (params.showNoise ||
         params.showTint ||
         params.showSepia ||
         params.showInvert ||
+        params.showEmboss ||
         params.showGrayscale) {
+        // Only grab data if any of the bitmap checkboxes are on
+        let imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+        let data = imageData.data;
+        let length = data.length;
+        let width = imageData.width;
+
         let noiseColor;
         if (params.showNoise)
             noiseColor = mathUtil.Convert.hexToRgbObj(params.noiseColor);
@@ -131,18 +164,28 @@ const draw = (params = {}) => {
         if (params.showTint)
             tintColor = mathUtil.Convert.hexToRgbObj(params.tintColor);
 
+        // data[i] is the red channel
+        // data[i+1] is the green channel
+        // data[i+2] is the blue channel
+        // data[i+3] is the alpha channel
         for (let i = 0; i < length; i += 4) {
-            // Noise
-            if (params.showNoise && Math.random() < params.noisePercent) {
-                data[i] = noiseColor.r;
-                data[i + 1] = noiseColor.g;
-                data[i + 2] = noiseColor.b;
+            // Emboss
+            if (params.showEmboss) {
+                data[i] = 127 + 2 * data[i] - data[i + 4] - data[i + width * 4];
+                data[i + 1] = 127 + 2 * data[i + 1] - data[i + 5] - data[i + 1 + width * 4];
+                data[i + 2] = 127 + 2 * data[i + 2] - data[i + 6] - data[i + 2 + width * 4];
             }
             // Tint
             if (params.showTint) {
                 data[i] += tintColor.r;
                 data[i + 1] += tintColor.g;
                 data[i + 2] += tintColor.b;
+            }
+            // Noise
+            if (params.showNoise && Math.random() < params.noisePercent) {
+                data[i] = noiseColor.r;
+                data[i + 1] = noiseColor.g;
+                data[i + 2] = noiseColor.b;
             }
             // Sepia
             if (params.showSepia) {
@@ -167,19 +210,10 @@ const draw = (params = {}) => {
                 data[i + 2] = average;
             }
         }
-    }
 
-    //Emboss
-    if (params.showEmboss) {
-        // Stepping through *each* sub-pixel
-        for (let i = 0; i < length; i++) {
-            if (i % 4 == 3) continue; // skip alpha channel
-            data[i] = 127 + 2 * data[i] - data[i + 4] - data[i + width * 4];
-        }
+        // Copy image data back to canvas
+        ctx.putImageData(imageData, 0, 0);
     }
-
-    // C) copy image data back to canvas
-    ctx.putImageData(imageData, 0, 0);
 }
 
 export { setupCanvas, draw };
