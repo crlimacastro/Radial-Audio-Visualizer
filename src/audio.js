@@ -167,7 +167,7 @@ function makeDistortionCurve(distortionType, amount = 20) {
 
 function attachBuffer(convolverNode, src) {
     let ajaxRequest = new XMLHttpRequest();
-    ajaxRequest.open('GET', "../../" + src, true);
+    ajaxRequest.open('GET', src, true);
     ajaxRequest.responseType = 'arraybuffer';
     ajaxRequest.onload = function() {
         let audioData = ajaxRequest.response;
