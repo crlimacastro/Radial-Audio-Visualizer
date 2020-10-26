@@ -85,10 +85,12 @@ const draw = (params = {}) => {
 
     if (params.showFrequency ||
         params.showAverage ||
-        params.showWaveform) {
-        // Only grab frequency data if needed for
+        params.showWaveform ||
+        params.showProgress) {
+        // Only grab frequency data and average if needed for
         // any of the visualizer shapes
         let frequencyData = audio.getByteFrequencyData();
+        let average = mathUtil.average(...frequencyData);
 
         if (params.showFrequency) {
             // Draw frequency polygon
@@ -98,9 +100,15 @@ const draw = (params = {}) => {
             polygonPoints.length = 0;
             // Populate polygon points array
             for (let i = 0; i < frequencyData.length; i++) {
+                let cos = Math.cos(theta);
+                let sin = Math.sin(theta);
+
+                let startX = averageScalar * average * cos;
+                let startY = averageScalar * average * sin;
+
                 polygonPoints.push({
-                    x: canvasCenterX + frequencyScalar * frequencyData[i] * Math.cos(theta),
-                    y: canvasCenterY + frequencyScalar * frequencyData[i] * Math.sin(theta)
+                    x: canvasCenterX + startX + frequencyScalar * frequencyData[i] * Math.cos(theta),
+                    y: canvasCenterY + startY + frequencyScalar * frequencyData[i] * Math.sin(theta)
                 });
 
                 theta -= dTheta;
@@ -110,37 +118,45 @@ const draw = (params = {}) => {
                 ctxUtil.fillPolygon(ctx, polygonPoints, polygonGradient);
         }
 
-        if (params.showAverage || params.showWaveform) {
-            // Only get the average if needed for
-            // average circle or waveform
-            let average = mathUtil.average(...frequencyData);
+        if (params.showAverage) {
+            // Draw average loudness circle
+            ctxUtil.fillCircle(ctx, canvasCenterX, canvasCenterY, averageScalar * average, averageCircleGradient);
+        }
 
-            if (params.showAverage) {
-                // Draw average loudness circle
-                ctxUtil.fillCircle(ctx, canvasCenterX, canvasCenterY, averageScalar * average, averageCircleGradient);
+        if (params.showProgress) {
+            let duration = audio.audioElement.duration;
+            let currentTime = audio.audioElement.currentTime;
+            let percentDone = currentTime / duration;
+
+            // Make sure a value was actually obtained
+            if (percentDone) {
+                // Draw an empty average circle that fills as the progress grows
+                ctxUtil.fillPie(ctx, canvasCenterX, canvasCenterY, averageScalar * average + 1, 0, 2 * Math.PI * percentDone, false, backgroundColor);
             }
 
-            if (params.showWaveform) {
-                let waveformData = audio.getByteWaveformData();
+        }
 
-                // Draw waveform
-                let x = canvasCenterX - average * averageScalar;
-                let dx = average * averageScalar * 2 / waveformData.length;
-                // Clear waveform points array
-                waveformPoints.length = 0;
-                // Populate waveform points array
-                waveformPoints.push({ x: canvasCenterX - average * averageScalar, y: canvasCenterY });
-                for (let i = 0; i < waveformData.length - 1; i++) {
-                    x += dx;
-                    waveformPoints.push({
-                        x: x,
-                        y: canvasCenterY + (waveformData[i] - 128) * waveformScalar * average
-                    });
-                }
-                waveformPoints.push({ x: canvasCenterX + average * averageScalar, y: canvasCenterY });
-                // Draw waveform
-                ctxUtil.strokeLines(ctx, waveformPoints, waveformColor, waveformWidth);
+        if (params.showWaveform) {
+            // Only grab waveform data if necessary
+            let waveformData = audio.getByteWaveformData();
+
+            // Draw waveform
+            let x = canvasCenterX - average * averageScalar;
+            let dx = average * averageScalar * 2 / waveformData.length;
+            // Clear waveform points array
+            waveformPoints.length = 0;
+            // Populate waveform points array
+            waveformPoints.push({ x: canvasCenterX - average * averageScalar, y: canvasCenterY });
+            for (let i = 0; i < waveformData.length - 1; i++) {
+                x += dx;
+                waveformPoints.push({
+                    x: x,
+                    y: canvasCenterY + (waveformData[i] - 128) * waveformScalar * average
+                });
             }
+            waveformPoints.push({ x: canvasCenterX + average * averageScalar, y: canvasCenterY });
+            // Draw waveform
+            ctxUtil.strokeLines(ctx, waveformPoints, waveformColor, waveformWidth);
         }
     }
 

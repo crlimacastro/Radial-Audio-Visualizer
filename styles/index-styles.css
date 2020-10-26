@@ -1,33 +1,59 @@
+/* * {
+    border: 1px solid white;
+} */
+
 body {
     background: black;
     color: white;
     font-family: 'Open Sans', sans-serif;
 }
 
+section {
+    margin-top: 1rem;
+}
+
 canvas {
     display: block;
-    margin: 1rem auto;
+    margin: auto;
     width: 100%;
 }
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
     font-family: 'Ubuntu', sans-serif;
 }
 
-#controls,
-section {
+label {
+    margin-right: 2.4rem;
+    white-space: nowrap;
+}
+
+button,
+select {
+    border: none;
+    border-radius: 9999px;
+    font-family: inherit;
+    font-size: inherit;
+    width: fit-content;
+    padding: 0.2rem 0.8rem;
+}
+
+input {
+    margin-right: 0.4rem;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+input[type="radio"] {
+    margin-bottom: 1.2rem;
+}
+
+#controls {
     margin: 1rem;
-}
-
-section>* {
-    margin-right: 1rem;
-}
-
-#fsButton {
-    font-size: 1.2rem;
-    width: 8rem;
+    display: flex;
+    flex-flow: row wrap;
 }
 
 .controlSection {
@@ -37,23 +63,4 @@ section>* {
 
 .controlSection>* {
     margin-bottom: 1rem;
-}
-
-#controls {
-    display: flex;
-    flex-flow: row wrap;
-}
-
-label {
-    margin-right: 2.4rem;
-    white-space: nowrap;
-}
-
-input {
-    margin-right: 0.5rem;
-}
-
-input[type="file"] {
-    font-family: inherit;
-    font-size: inherit;
 }

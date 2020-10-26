@@ -180,6 +180,7 @@ function attachBuffer(convolverNode, src) {
 
 export {
     audioCtx,
+    audioElement,
     setupWebaudio,
     loadSoundFile,
     playCurrentSound,

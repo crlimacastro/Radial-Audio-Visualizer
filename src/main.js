@@ -6,6 +6,7 @@ const drawParams = {
     showFrequency: true,
     showWaveform: true,
     showAverage: true,
+    showProgress: true,
     showNoise: false,
     noiseColor: '#ffffff',
     noisePercent: .05,
@@ -79,6 +80,9 @@ function setupUI(canvasElement) {
     let showAverageCB = document.querySelector("#showAverageCB");
     showAverageCB.checked = drawParams.showAverage;
     showAverageCB.onchange = e => { drawParams.showAverage = e.target.checked };
+    let showProgressCB = document.querySelector("#showProgressCB");
+    showProgressCB.checked = drawParams.showProgress;
+    showProgressCB.onchange = e => { drawParams.showProgress = e.target.checked };
 
     // Bitmap manipulation checkboxes
     // Noise
