@@ -2,7 +2,7 @@
 
 Link to Application: <https://people.rit.edu/crl3554/330/project2>
 
-Video Reel: TODO
+Video Reel: <https://youtu.be/En7BEe9R70Q>
 
 My portfolio: <https://crlimacastro.github.io/>
 
