@@ -1,4 +1,4 @@
-Radial Audio Visualizer
+# Radial Audio Visualizer
 
 Link to Application: <https://people.rit.edu/crl3554/330/project2>
 
