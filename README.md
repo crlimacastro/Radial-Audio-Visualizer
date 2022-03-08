@@ -1,16 +1,12 @@
-# Project 2 - Radial Audio Visualizer
+Radial Audio Visualizer
 
 Link to Application: <https://people.rit.edu/crl3554/330/project2>
-
-Video Reel: <https://youtu.be/En7BEe9R70Q>
 
 My portfolio: <https://crlimacastro.github.io/>
 
 # Documentation
 
 ## Contents
-
-[Discussion Post](#Discussion-Post)
 
 [Requirements](#Requirements)
 
@@ -21,12 +17,6 @@ My portfolio: <https://crlimacastro.github.io/>
 [Citations](#Citations)
 
 [Log](#Log)
-
-------------------------------------
-
-## Discussion Post
-
-I will be working solo and I will make a radial/circular audio visualizer
 
 ------------------------------------
 
@@ -88,14 +78,6 @@ For this project I was not able to come up with something as creative as for pro
 ### Wishlist of Features
 
 The only feature I had planned but was not able to implement on time was to add a delay node and effect.
-
-------------------------------------
-
-## Self-Assessment
-
-While not as ambitious or above-and-beyond as project 1, I was still able to create something very polished for this project and I am proud of how it came out.
-
-**Grade** - 95%
 
 ------------------------------------
 
