@@ -1,6 +1,8 @@
 # Radial Audio Visualizer
 
-YouTube Demo: https://www.youtube.com/watch?v=inICloQq1C4&t=60s
+YouTube demo: https://www.youtube.com/watch?v=inICloQq1C4&
+
+![preview](preview.png)
 
 # Citations
 
